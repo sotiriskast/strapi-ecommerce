@@ -1,26 +1,35 @@
 import Head from "next/head";
-import products from '../products.json';
-import {fromImageToUrl} from "../../utils/urls";
+import {API_URL, fromImageToUrl} from "../../utils/urls";
 
-const product = products[0];
-
-const Product = () => {
+const Product = ({product}) => {
     return (
         <div>
             <Head>
-                {product.meta_title &&
+                {product.attributes.meta_title &&
                     <title>{product.meta_title}</title>
                 }
-                {product.meta_description &&
+                {product.attributes.meta_description &&
                     <meta name={'description'} content={product.meta_description}/>
                 }
 
             </Head>
-            <h3>{product.name}</h3>
-            <img src={fromImageToUrl(product.image)} alt=""/>
-            <h3>{product.content}</h3>
-            <h3>{product.price}</h3>
+            <h3>{product.attributes.name}</h3>
+            <img width={100} src={fromImageToUrl(product.attributes.image)} alt=""/>
+            <h3>{product.attributes.content}</h3>
+            <h3>{product.attributes.price}</h3>
         </div>
     )
 }
+
+export async function getServerSideProps( content) {
+
+    // Fetch data from external API
+    const res = await fetch(`${API_URL}/api/products?filters[slug][$eq]=${content.params.slug}&populate=image`)
+    const data = await res.json()
+    const product=data.data[0];
+    // Pass data to the page via props
+    return { props: { product } }
+
+}
+
 export default Product;

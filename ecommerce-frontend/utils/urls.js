@@ -4,5 +4,5 @@ export const fromImageToUrl = (image) => {
     if (!image) {
         return "/vercel.svg"
     }
-    return API_URL + '/api/' + image.data?.attributes.name;
+    return API_URL + image.data.attributes.url;
 }

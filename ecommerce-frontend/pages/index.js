@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import {API_URL, fromImageToUrl} from "../utils/urls";
+
 import {twoDecimals} from "../utils/format";
 
 import styles from '../styles/Home.module.css'
@@ -19,15 +20,18 @@ export default function Home({products}) {
                 console.log(product.attributes.name),
 
                 <div key={product.attributes.slug} className={styles.product}>
-                    <Link href={`/products/${product.slug}`}>
+                    <Link href={`/products/${product.attributes.slug}`}>
+                        <a>
                         <div className={styles.product_Row}>
                             <div className={styles.product_colImg}>
-                                <img src={fromImageToUrl(product.attributes.image)} alt=""/>
+                                <img width={150}  src={fromImageToUrl(product.attributes.image)} />
+
                             </div>
                             <div className={styles.product_Col}>
                                 {product.attributes.name} {product.attributes.price}
                             </div>
                         </div>
+                        </a>
                     </Link>
                 </div>
 
